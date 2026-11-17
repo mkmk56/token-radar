@@ -1,0 +1,9 @@
+.kit/
+BUILD_PROMPT.md
+BUILD_PROMPT.md.b64
+build.log
+build2.log
+validate-radar.mjs
+out/
+out2/
+.DS_Store
