@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar: Calibrated Pre-Token Valuation & Farm Intelligence</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<a class="skip" href="#board">Skip to board</a>
+<div class="shell">
+  <header class="top">
+    <div class="brand">
+      <span class="mark"></span>
+      <span class="brand-name">TOKEN LAUNCH RADAR v2</span>
+    </div>
+    <div class="top-meta">
+      <span id="meta-date">Snapshot: --</span>
+      <span id="meta-watchlist">Watchlist: 40</span>
+      <span id="meta-board">Board: --</span>
+      <span>Claim Valuation Only</span>
+    </div>
+  </header>
+
+  <section class="lede">
+    <div>
+      <h1>Calibrated Pre-Token Protocol Valuation & Airdrop Intelligence</h1>
+      <p>Valuing pre-token protocols by anchoring them to market-calibrated category multiples, TVL, 7-day velocity, protocol maturity, and chain breadth. Every valuation is the entry's analytical claim derived directly from the sealed DefiLlama snapshot, never a launch prediction.</p>
+    </div>
+    <div class="facts" id="summary-facts">
+      <div class="fact"><span>Watchlist Covered</span><b id="f-watchlist">40 / 40</b></div>
+      <div class="fact"><span>Ranked Board Size</span><b id="f-board">--</b></div>
+      <div class="fact"><span>Live Token Benchmarks</span><b id="f-live">24</b></div>
+      <div class="fact"><span>Calibration Standard</span><b>Market Median</b></div>
+    </div>
+  </section>
+
+  <div class="controls" id="controls">
+    <div class="field">
+      <label for="q">Search</label>
+      <input type="search" id="q" placeholder="Search name, slug, chain or category...">
+    </div>
+    <div class="field">
+      <label for="category">Category</label>
+      <select id="category">
+        <option value="all">All Categories</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="chain">Chain</label>
+      <select id="chain">
+        <option value="all">All Chains</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>View Mode</label>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" aria-selected="true" data-tab="pre-token" id="tab-pre">Ranked Board</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="live" id="tab-live">Live Market Peers</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="model" id="tab-model">Model & Multiples</button>
+      </div>
+    </div>
+    <div class="count" id="row-count">-- rows</div>
+  </div>
+
+  <main id="board" tabindex="-1">
+    <div class="panel">
+      <div class="table-wrap">
+        <table id="main-table">
+          <thead>
+            <tr id="table-head"></tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <section id="model-section" class="model-panel" style="display: none;">
+    <h2>Valuation Model & Category Calibration</h2>
+    <p>Pre-token protocols are valued by anchoring their TVL to empirical market multiples derived from tokenized peers in the same category, adjusted for growth velocity, maturity age, and multi-chain breadth.</p>
+    
+    <div class="formula-box">
+      <h3>Core Formula</h3>
+      <code>implied_value_usd = max(1, round(tvl_usd × category_multiple × growth_mult × maturity_mult × chain_mult))</code>
+      <ul>
+        <li><b>Category Multiple:</b> Median Mcap/TVL ratio of live-token protocols in the same category, winsorized to [0.02, 2.00]. Falls back to global median if fewer than 3 live peers exist.</li>
+        <li><b>Growth Multiplier:</b> <code>1 + (clamp(change_7d, -60, 120) / 100) × 0.5</code>. Missing growth counts as 0%.</li>
+        <li><b>Maturity Multiplier:</b> <code>0.6 + min(age_days, 1095) / 1095 × 0.4</code> (unknown listed_at defaults to 365 days).</li>
+        <li><b>Chain Breadth Multiplier:</b> <code>1 + 0.05 × min(chains.length - 1, 4)</code>, capped at 1.20.</li>
+      </ul>
+    </div>
+
+    <h3>Category Multiples Table (Derived from Snapshot)</h3>
+    <div class="table-wrap">
+      <table class="multiples-table">
+        <thead>
+          <tr><th>Category</th><th>Live Peers Count</th><th>Median Mcap / TVL Ratio</th><th>Assigned Multiple</th></tr>
+        </thead>
+        <tbody id="multiples-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <aside id="detail-drawer" class="detail" hidden>
+    <div class="detail-head">
+      <div>
+        <span class="sub" id="detail-category">--</span>
+        <h2 id="detail-title">--</h2>
+        <span class="sub" id="detail-slug">--</span>
+      </div>
+      <button type="button" class="close" id="detail-close" aria-label="Close detail view">✕</button>
+    </div>
+    <div id="detail-content"></div>
+  </aside>
+</div>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
